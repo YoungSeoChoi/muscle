@@ -8,10 +8,10 @@ object MuscleMain {
   def main(args: Array[String]): Unit = {
     val Saehyeun = "Schedule1.txt"
     val Youngseo = "Schedule2.txt"
-    val scheduler: Scheduler = new Scheduler(fileReader(Saehyeun), fileReader(Youngseo))
+    val scheduler: Scheduler = new Scheduler(fileReader(Saehyeun, false), fileReader(Youngseo, true))
   }
 
-  def fileReader(fileName: String): List[WorkTime] = {
+  def fileReader(fileName: String, exerciseClock: Boolean): List[WorkTime] = {
     val a: List[String] = Source.fromFile(fileName)("Unicode").getLines.toList
     for {
       line: String <- a
@@ -20,7 +20,14 @@ object MuscleMain {
       (f, b) = List(Mon(), Tue(), Wed(), Thu(), Fri(), Sat(), Sun()).splitAt(calculateDay(dateArgs(0), dateArgs(1), dateArgs(2)))
       dayIter: Iterator[DoW] = (b ++ f).toIterator
       day: WorkTime = back.head match {
-        case "주" => Day(dateArgs(0), dateArgs(1), dateArgs(2),  dayIter.next())
+        case "주" =>
+          val dow = dayIter.next()
+          if (exerciseClock) {
+            dow match {
+              case Wed() => Off(dateArgs(0), dateArgs(1), dateArgs(2), Wed())
+              case _ => Day(dateArgs(0), dateArgs(1), dateArgs(2), dow)
+            }
+          } else Day(dateArgs(0), dateArgs(1), dateArgs(2), dow)
         case "야" => Night(dateArgs(0), dateArgs(1), dateArgs(2),  dayIter.next())
         case "비" => Off(dateArgs(0), dateArgs(1), dateArgs(2),  dayIter.next())
         case "휴" => Holiday(dateArgs(0), dateArgs(1), dateArgs(2),  dayIter.next())

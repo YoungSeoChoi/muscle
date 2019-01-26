@@ -13,7 +13,6 @@ case class Day(year: Int, month: Int, date: Int, day: DoW) extends WorkTime {
     year + "년 " + month + "월 " + date + "일 " + day.toString + "요일"
   }
 }
-// TODO parameter of night work, holiday are not adequate
 case class Night(year: Int, month: Int, date: Int, day: DoW) extends WorkTime {
   override def toString: String = {
     year + "년 " + month + "월 " + date + "일 " + day.toString + "요일"

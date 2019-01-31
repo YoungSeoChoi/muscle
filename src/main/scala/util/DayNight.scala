@@ -13,3 +13,9 @@ case class N() extends DayNight {
     "밤"
   }
 }
+
+case class X() extends DayNight {
+  override def toString: String = {
+    "X"
+  }
+}

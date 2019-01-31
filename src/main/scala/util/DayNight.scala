@@ -5,12 +5,12 @@ abstract class DayNight
 
 case class D() extends DayNight {
   override def toString: String = {
-    "낮"
+    "점심"
   }
 }
 case class N() extends DayNight {
   override def toString: String = {
-    "밤"
+    "저녁"
   }
 }
 

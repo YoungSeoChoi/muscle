@@ -39,8 +39,12 @@ class Scheduler(sc1: List[WorkTime], sc2: List[WorkTime]) {
   }
 
   private def Xsplit[T](raw: List[T], pole: T): List[List[T]] = {
-    val (f, b) = raw.splitAt(raw.indexOf(pole))
-    f :: Xsplit(b.tail, pole)
+    val idx: Int = raw.indexOf(pole)
+    if (idx == -1) List(raw)
+    else {
+      val (f, b) = raw.splitAt(idx)
+      f :: Xsplit(b.tail, pole)
+    }
   }
 
   private def divider(in: List[DayNight], divNum: Int): List[DayNight] = {

@@ -18,7 +18,6 @@ class Scheduler(sc1: List[WorkTime], sc2: List[WorkTime]) {
 //    val initprogram = initSchedule(sc1, sc2, program)
     val scTotal = sc1 zip sc2
 
-
     exeDivision match {
       case 2 => {
         // rawProgram do not consider exercise holiday
@@ -43,7 +42,7 @@ class Scheduler(sc1: List[WorkTime], sc2: List[WorkTime]) {
     if (idx == -1) List(raw)
     else {
       val (f, b) = raw.splitAt(idx)
-      f :: Xsplit(b.tail, pole)
+      List(f) ++ List(List(b.head)) ++ Xsplit(b.tail, pole)
     }
   }
 

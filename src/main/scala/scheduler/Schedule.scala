@@ -5,23 +5,20 @@ import util._
 /*
 * Schedule trait has two sibling class, it is DaySchedule and OpSchedule.
 */
-class Scheduler(sc1: List[WorkTime], sc2: List[WorkTime]) {
+class Scheduler(sc1: List[WorkTime], sc2: List[WorkTime], beforeTwo: List[DayNight]) {
 
   // We can choose a lot of amount of exercise or better agreeable exercise hour (0 ~ 5)
   // We can divide body into (0, 2, 3, 5)
   // using greedy algorithm
-  def makeSchedule(exeAmount: Int, exeDivision: Int): List[DayNight] = {
+  def makeSchedule(exeAmount: Int, exeDivision: Int) = {
     assert((0 <= exeAmount) && (exeAmount <= 5))
     assert(List(0,2,3,5).contains(exeDivision))
-
-//    val program: Array[DayNight] = new Array[DayNight](sc1.length)
-//    val initprogram = initSchedule(sc1, sc2, program)
     val scTotal = sc1 zip sc2
 
     exeDivision match {
       case 2 => {
         // rawProgram do not consider exercise holiday
-        val rawProgram: List[DayNight] = scTotal.map(x => x match {
+        val rawProgram: List[DayNight] = beforeTwo ++ scTotal.map(x => x match {
           case (Holiday(_, _, _, _), _) => X()
           case (_, Holiday(_, _, _, _)) => X()
           case (Day(_, _, _, _), Night(_, _, _, _)) => X()
@@ -32,7 +29,7 @@ class Scheduler(sc1: List[WorkTime], sc2: List[WorkTime]) {
         })
         // piceceProgram is set of consecutive exercise piece
         val pieceProgram: List[List[DayNight]] = Xsplit(rawProgram, X())
-        pieceProgram.map(divider(_, exeDivision)).flatten
+        pieceProgram.map(divider(_, exeDivision)).flatten.drop(2)
       }
     }
   }

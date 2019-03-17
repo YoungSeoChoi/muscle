@@ -38,11 +38,11 @@ object FileProcessor {
   }
 
   /**
+    * 날짜 계산해서 요일 확인하는데 쓰임
     * @param year
     * @param month
     * @param date
     * @return
-    * 날짜 계산해서 요일 확인하는데 쓰임
     */
   def calculateDay(year: Int, month: Int, date: Int): Int = {
     val monthDiffList: HashMap[Int, Int] = HashMap(1->0, 2->31, 3->59, 4->90, 5->120, 6->151, 7->181, 8->212, 0->243, 10->273, 11->304, 12->334)
@@ -53,9 +53,9 @@ object FileProcessor {
   }
 
   /**
+    * 한 달이 시작되기 2일 전 운동 스케쥴 2개를 받아옴
     * @param fileName
     * @return
-    * 한 달이 시작되기 2일 전 운동 스케쥴 2개를 받아옴
     */
   def extraReader(fileName: String): List[DayNight] = {
     // TODO 분할 수에 따라 필요한 스케쥴 수가 다르기 때문에 넉넉하게 4개를 가져와야함 (최대 5분할)

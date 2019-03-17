@@ -5,7 +5,7 @@ import util.DoW
 /*
 * Define the several types of work
 */
-abstract class WorkTime
+trait WorkTime
 
 // Day work has end time. For example, Wednesday work is ended at 11:30
 case class Day(year: Int, month: Int, date: Int, day: DoW) extends WorkTime {

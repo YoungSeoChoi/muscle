@@ -1,7 +1,7 @@
 package util
 
 // Day of the Week
-abstract class DoW
+trait DoW
 
 case class Mon() extends DoW {
   override def toString: String = {

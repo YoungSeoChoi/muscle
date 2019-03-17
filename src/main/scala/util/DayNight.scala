@@ -1,7 +1,7 @@
 package util
 
 // using for exercise program list
-abstract class DayNight
+trait DayNight
 
 case class D() extends DayNight {
   override def toString: String = {

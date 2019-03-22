@@ -17,7 +17,7 @@ object FileProcessor {
       line: String <- a
       (front: List[String], back: List[String]) = line.replace('\t', ' ').split(' ').toList.splitAt(3)
       dateArgs: List[Int] = front.map(x => x.substring(0, x.length - 1).toInt)
-      (f, b) = List(Mon(), Tue(), Wed(), Thu(), Fri(), Sat(), Sun()).splitAt(calculateDay(dateArgs(0), dateArgs(1), dateArgs(2)))
+      (f, b) = List(Mon(), Tue(), Wed(), Thu(), Fri(), Sat(), Sun()).splitAt(calculateDay(dateArgs.head, dateArgs(1), dateArgs(2)))
       // XXX Why this iterator doesn't blow up when it comes to the end?
       dayIter: Iterator[DoW] = (b ++ f).toIterator
       day: WorkTime = back.head match {
@@ -25,23 +25,23 @@ object FileProcessor {
           val dow = dayIter.next()
           if (exerciseClock) {
             dow match {
-              case Wed() => Off(dateArgs(0), dateArgs(1), dateArgs(2), Wed())
-              case _ => Day(dateArgs(0), dateArgs(1), dateArgs(2), dow)
+              case Wed() => Off(dateArgs.head, dateArgs(1), dateArgs(2), Wed())
+              case _ => Day(dateArgs.head, dateArgs(1), dateArgs(2), dow)
             }
-          } else Day(dateArgs(0), dateArgs(1), dateArgs(2), dow)
-        case "야" => Night(dateArgs(0), dateArgs(1), dateArgs(2),  dayIter.next())
-        case "비" => Off(dateArgs(0), dateArgs(1), dateArgs(2),  dayIter.next())
-        case "휴" => Holiday(dateArgs(0), dateArgs(1), dateArgs(2),  dayIter.next())
-        case _ => throw new RuntimeException
+          } else Day(dateArgs.head, dateArgs(1), dateArgs(2), dow)
+        case "야" => Night(dateArgs.head, dateArgs(1), dateArgs(2),  dayIter.next())
+        case "비" => Off(dateArgs.head, dateArgs(1), dateArgs(2),  dayIter.next())
+        case "휴" => Holiday(dateArgs.head, dateArgs(1), dateArgs(2),  dayIter.next())
+        case d => println("message: " + d.toString); throw new RuntimeException
       }
     } yield day
   }
 
   /**
     * 날짜 계산해서 요일 확인하는데 쓰임
-    * @param year
-    * @param month
-    * @param date
+    * @param year year
+    * @param month month
+    * @param date date
     * @return
     */
   def calculateDay(year: Int, month: Int, date: Int): Int = {
@@ -54,17 +54,17 @@ object FileProcessor {
 
   /**
     * 한 달이 시작되기 2일 전 운동 스케쥴 2개를 받아옴
-    * @param fileName
+    * @param fileName extra file name
     * @return
     */
   def extraReader(fileName: String): List[DayNight] = {
     // TODO 분할 수에 따라 필요한 스케쥴 수가 다르기 때문에 넉넉하게 4개를 가져와야함 (최대 5분할)
     val a: List[String] = Source.fromFile(fileName)("Unicode").getLines.toList
-    a.map(x => x match {
+    a.map {
       case "D" => D()
       case "N" => N()
       case "X" => X()
       case _ => throw new RuntimeException
-    })
+    }
   }
 }

@@ -5,12 +5,12 @@ trait DayNight
 
 case class D() extends DayNight {
   override def toString: String = {
-    "점심"
+    "D"
   }
 }
 case class N() extends DayNight {
   override def toString: String = {
-    "저녁"
+    "N"
   }
 }
 
